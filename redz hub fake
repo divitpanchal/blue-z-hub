@@ -24,3 +24,4 @@ local Settings = { JoinTeam = "Pirates"; -- Pirates/Marines Translator = true; -
 loadstring(game:HttpGet("https://raw.githubusercontent.com/newredz/BloxFruits/refs/heads/main/Source.luau"))(Settings)
 loadstring(game:HttpGet("https://pastefy.app/ACOX6D6h/raw"))() 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
+ScreenGui:Destroy()
