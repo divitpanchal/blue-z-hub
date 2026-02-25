@@ -12,12 +12,12 @@ local Text = Instance.new("TextLabel")
 Text.Size = UDim2.new(1, 0, 0.8, 0)
 Text.Position = UDim2.new(0, 0, 0.1, 0)
 Text.BackgroundTransparency = 1
-Text.Text = "Loading Blue X hub by supperdupperhacke"
+Text.Text = "Loading QuantumOnyx project by supperdupperhacke"
 Text.TextColor3 = Color3.fromRGB(0, 255, 127)
 Text.TextSize = 20
 Text.Font = Enum.Font.SourceSansBold
 Text.TextWrapped = true
 Text.Parent = Frame
-task.wait(2) -- Display for 5 seconds
+task.wait(5) -- Display for 5 seconds
 loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))()
 ScreenGui:Destroy()
