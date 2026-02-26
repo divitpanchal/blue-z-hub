@@ -1,0 +1,124 @@
+-- Roblox Server Hop Script with GUI
+-- Place this in StarterPlayerScripts
+
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+local gameId = game.PlaceId
+local currentJobId = game.JobId
+
+-- Function to get a list of servers
+local function getServers()
+    local servers = {}
+    local cursor = ""
+    local success, result
+
+    repeat
+        success, result = pcall(function()
+            return HttpService:JSONDecode(
+                game:HttpGet(
+                    string.format(
+                        "https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Asc&limit=100&cursor=%s",
+                        gameId,
+                        cursor
+                    )
+                )
+            )
+        end)
+
+        if success and result and result.data then
+            for _, server in ipairs(result.data) do
+                if server.id ~= currentJobId and server.playing < server.maxPlayers then
+                    table.insert(servers, server.id)
+                end
+            end
+            cursor = result.nextPageCursor or ""
+        else
+            warn("Failed to fetch server list.")
+            break
+        end
+    until cursor == "" or #servers >= 1
+
+    return servers
+end
+
+-- Function to hop servers
+local function hopServer()
+    local servers = getServers()
+    if #servers > 0 then
+        TeleportService:TeleportToPlaceInstance(gameId, servers[math.random(1, #servers)], Players.LocalPlayer)
+    else
+        warn("No available servers found.")
+    end
+end
+
+-- GUI Setup
+local gui = Instance.new("ScreenGui")
+gui.Name = "ServerHopGui"
+gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 250, 0, 150)
+frame.Position = UDim2.new(0.5, -125, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- black
+frame.BorderSizePixel = 2
+frame.BorderColor3 = Color3.fromRGB(255, 140, 0) -- light orange
+frame.Parent = gui
+
+-- Manual Hop Button
+local hopButton = Instance.new("TextButton")
+hopButton.Size = UDim2.new(0, 200, 0, 40)
+hopButton.Position = UDim2.new(0.5, -100, 0, 10)
+hopButton.Text = "Hop Server"
+hopButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+hopButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+hopButton.Parent = frame
+
+-- Seconds Input
+local secondsBox = Instance.new("TextBox")
+secondsBox.Size = UDim2.new(0, 200, 0, 30)
+secondsBox.Position = UDim2.new(0.5, -100, 0, 60)
+secondsBox.PlaceholderText = "Enter seconds..."
+secondsBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+secondsBox.TextColor3 = Color3.fromRGB(255, 140, 0)
+secondsBox.Parent = frame
+
+-- Toggle Button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 200, 0, 40)
+toggleButton.Position = UDim2.new(0.5, -100, 0, 100)
+toggleButton.Text = "Auto Hop: OFF"
+toggleButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+toggleButton.Parent = frame
+
+-- Logic for GUI
+local autoHop = false
+
+hopButton.MouseButton1Click:Connect(function()
+    hopServer()
+end)
+
+toggleButton.MouseButton1Click:Connect(function()
+    autoHop = not autoHop
+    toggleButton.Text = autoHop and "Auto Hop: ON" or "Auto Hop: OFF"
+end)
+
+-- Auto Hop Loop
+task.spawn(function()
+    while true do
+        if autoHop then
+            local seconds = tonumber(secondsBox.Text)
+            if seconds and seconds > 0 then
+                task.wait(seconds)
+                hopServer()
+            else
+                task.wait(1) -- fallback wait
+            end
+        else
+            task.wait(1)
+        end
+    end
+end)
