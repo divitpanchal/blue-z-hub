@@ -1,0 +1,68 @@
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create ScrollingFrame
+local scrollFrame = Instance.new("ScrollingFrame")
+scrollFrame.Size = UDim2.new(0, 200, 0, 300)
+scrollFrame.Position = UDim2.new(0.5, -100, 0.5, -150)
+scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
+scrollFrame.ScrollBarThickness = 8
+scrollFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black background
+scrollFrame.Parent = screenGui
+
+-- UIListLayout for automatic button arrangement
+local layout = Instance.new("UIListLayout")
+layout.Parent = scrollFrame
+layout.Padding = UDim.new(0, 10)
+
+-- Define different functions for each button
+local function action1()
+    print("Button 1 pressed: Hello World!")
+end
+
+local function action2()
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+    print("Button 2 pressed: Jump triggered!")
+end
+
+local function action3()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
+    print("Button 3 pressed: Speed boosted!")
+end
+
+local function action3b()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    print("Button 3 duplicate pressed: Speed reset!")
+end
+
+local function action4()
+    game.Players.LocalPlayer.Character.Humanoid.Health = 100
+    print("Button 4 pressed: Health restored!")
+end
+
+local function action5()
+    print("Button 5 pressed: Custom action executed!")
+end
+
+-- Function to create buttons and connect them to actions
+local function createButton(text, func)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, -10, 0, 50)
+    button.BackgroundColor3 = Color3.fromRGB(255, 102, 0) -- Orange theme
+    button.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 24
+    button.Text = text
+    button.Parent = scrollFrame
+
+    button.MouseButton1Click:Connect(func)
+end
+
+-- Create buttons with labels "1", "2", "3", "3", "4", "5"
+createButton("1", action1)
+createButton("2", action2)
+createButton("3", action3)
+createButton("3", action3b)
+createButton("4", action4)
+createButton("5", action5)
