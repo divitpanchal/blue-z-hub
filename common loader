@@ -1,68 +1,75 @@
 -- Create ScreenGui
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Create ScrollingFrame
-local scrollFrame = Instance.new("ScrollingFrame")
-scrollFrame.Size = UDim2.new(0, 200, 0, 300)
-scrollFrame.Position = UDim2.new(0.5, -100, 0.5, -150)
-scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
-scrollFrame.ScrollBarThickness = 8
-scrollFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black background
-scrollFrame.Parent = screenGui
+-- Create Frame (black background)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 250)
+frame.Position = UDim2.new(0.5, -100, 0.5, -125)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- black
+frame.BorderSizePixel = 2
+frame.BorderColor3 = Color3.fromRGB(255, 0, 0) -- red border
+frame.Parent = gui
 
--- UIListLayout for automatic button arrangement
-local layout = Instance.new("UIListLayout")
-layout.Parent = scrollFrame
-layout.Padding = UDim.new(0, 10)
+-- Loading label (red text)
+local loadingLabel = Instance.new("TextLabel")
+loadingLabel.Size = UDim2.new(0, 180, 0, 40)
+loadingLabel.Position = UDim2.new(0, 10, 0, 210)
+loadingLabel.Text = ""
+loadingLabel.BackgroundTransparency = 1
+loadingLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- red
+loadingLabel.TextScaled = true
+loadingLabel.Parent = frame
 
--- Define different functions for each button
-local function action1()
-    print("Button 1 pressed: Hello World!")
+-- Function to animate loading text
+local function playLoadingAnimation()
+    local dots = 0
+    loadingLabel.Text = "Loading"
+    local running = true
+    task.spawn(function()
+        while running do
+            dots = (dots + 1) % 4
+            loadingLabel.Text = "Loading" .. string.rep(".", dots)
+            task.wait(0.5)
+        end
+    end)
+    return function() running = false loadingLabel.Text = "" end
 end
 
-local function action2()
-    game.Players.LocalPlayer.Character.Humanoid.Jump = true
-    print("Button 2 pressed: Jump triggered!")
-end
-
-local function action3()
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
-    print("Button 3 pressed: Speed boosted!")
-end
-
-local function action3b()
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-    print("Button 3 duplicate pressed: Speed reset!")
-end
-
-local function action4()
-    game.Players.LocalPlayer.Character.Humanoid.Health = 100
-    print("Button 4 pressed: Health restored!")
-end
-
-local function action5()
-    print("Button 5 pressed: Custom action executed!")
-end
-
--- Function to create buttons and connect them to actions
-local function createButton(text, func)
+-- Function to create buttons (red theme)
+local function createButton(name, position, url)
     local button = Instance.new("TextButton")
-    button.Size = UDim2.new(1, -10, 0, 50)
-    button.BackgroundColor3 = Color3.fromRGB(255, 102, 0) -- Orange theme
-    button.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
-    button.Font = Enum.Font.SourceSansBold
-    button.TextSize = 24
-    button.Text = text
-    button.Parent = scrollFrame
+    button.Size = UDim2.new(0, 180, 0, 40)
+    button.Position = UDim2.new(0, 10, 0, position)
+    button.Text = name
+    button.BackgroundColor3 = Color3.fromRGB(150, 0, 0) -- dark red
+    button.TextColor3 = Color3.fromRGB(255, 255, 255) -- white text
+    button.Parent = frame
 
-    button.MouseButton1Click:Connect(func)
+    -- Hover effect: brighten red
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+    end)
+
+    button.MouseButton1Click:Connect(function()
+        local stopAnimation = playLoadingAnimation()
+        local success, response = pcall(function()
+            return game:HttpGet(url)
+        end)
+        stopAnimation()
+        if success then
+            loadstring(response)()
+        else
+            warn("Failed to load from: " .. url)
+        end
+    end)
 end
 
--- Create buttons with labels "1", "2", "3", "3", "4", "5"
-createButton("1", action1)
-createButton("2", action2)
-createButton("3", action3)
-createButton("3", action3b)
-createButton("4", action4)
-createButton("5", action5)
+-- Add 4 buttons with GitHub raw file URLs
+createButton("Button 1", 10, "https://raw.githubusercontent.com/username/repo/main/file1.lua")
+createButton("Button 2", 60, "https://raw.githubusercontent.com/username/repo/main/file2.lua")
+createButton("Button 3", 110, "https://raw.githubusercontent.com/username/repo/main/file3.lua")
+createButton("Button 4", 160, "https://raw.githubusercontent.com/username/repo/main/file4.lua")
