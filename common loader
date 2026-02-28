@@ -40,13 +40,13 @@ closeButton.TextSize = 20
 closeButton.Parent = mainFrame
 
 closeButton.MouseEnter:Connect(function()
-	closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+    closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 end)
 closeButton.MouseLeave:Connect(function()
-	closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 end)
 closeButton.MouseButton1Click:Connect(function()
-	gui:Destroy()
+    gui:Destroy()
 end)
 
 -- ScrollingFrame for buttons
@@ -65,37 +65,50 @@ listLayout.FillDirection = Enum.FillDirection.Vertical
 listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 listLayout.Parent = scrollingFrame
 
--- Function to create buttons
+-- Function to create buttons (with loadstring execution)
 local function createButton(name, url)
-	local button = Instance.new("TextButton")
-	button.Size = UDim2.new(0, 460, 0, 45)
-	button.Text = name
-	button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.Font = Enum.Font.SourceSansBold
-	button.TextSize = 22
-	button.Parent = scrollingFrame
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 460, 0, 45)
+    button.Text = name
+    button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 22
+    button.Parent = scrollingFrame
 
-	local stroke = Instance.new("UIStroke")
-	stroke.Color = Color3.fromRGB(200, 200, 200)
-	stroke.Thickness = 2
-	stroke.Transparency = 0.5
-	stroke.Parent = button
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.fromRGB(200, 200, 200)
+    stroke.Thickness = 2
+    stroke.Transparency = 0.5
+    stroke.Parent = button
 
-	button.MouseEnter:Connect(function()
-		button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-	end)
-	button.MouseLeave:Connect(function()
-		button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	end)
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    end)
 
-	button.MouseButton1Click:Connect(function()
-		print("Executing: " .. url)
-		-- Add your execution logic here
-	end)
+    button.MouseButton1Click:Connect(function()
+        local success, response = pcall(function()
+            return game:HttpGet(url)
+        end)
 
-	scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y)
+        if success then
+            local func = loadstring(response)
+            if func then
+                func() -- execute the script
+            else
+                warn("Failed to compile script from: " .. url)
+            end
+        else
+            warn("Failed to load from: " .. url)
+        end
+    end)
+
+    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y)
 end
+
 
 -- Add exactly 10 distinct buttons
 createButton("server Hopper", "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/server%20hopper")
