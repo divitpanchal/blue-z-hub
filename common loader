@@ -101,7 +101,7 @@ end
 createButton("server Hopper", "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/server%20hopper")
 createButton("Blue x", "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/loding%20script")
 createButton("Quantanium", "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/quantanium%20hub")
-createButton("Reiz Hub", ""https://relzhub.farrelghibran.com/loader.lua")
+createButton("Reiz Hub", "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/reiz%20hub")
 createButton("Project 1111", "https://raw.githubusercontent.com/username/repo/main/file5.lua")
 createButton("error to load", "https://raw.githubusercontent.com/username/repo/main/file6.lua")
 createButton("error to load", "https://raw.githubusercontent.com/username/repo/main/file7.lua")
