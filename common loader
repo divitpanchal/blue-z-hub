@@ -5,12 +5,12 @@ local Window = Rayfield:CreateWindow({
    LoadingTitle = "scripts by supperdupperhacke",
    LoadingSubtitle = "by Sirius",
    ShowText = "supperdupperhacker scripts", -- for mobile users to unhide Rayfield, change if you'd like
-   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   Theme = "Ocean", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    ToggleUIKeybind = "a", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
 
    DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false -- Prevents Rayfield from emitting warnings when the script has a version mismatch with the interface.
+   DisableBuildWarnings = false, -- Prevents Rayfield from emitting warnings when the script has a version mismatch with the interface.
 
    ConfigurationSaving = {
       Enabled = false,
@@ -20,7 +20,7 @@ local Window = Rayfield:CreateWindow({
 
    Discord = {
       Enabled = true, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "https://discord.gg/DuJy8Hxm", -- The Discord invite code, do not include Discord.gg/. E.g. Discord.gg/ ABCD would be ABCD
+      Invite = "DuJy8Hxm", -- The Discord invite code, do not include Discord.gg/. E.g. Discord.gg/ ABCD would be ABCD
       RememberJoins = true -- Set this to false to make them join the Discord every time they load it up
    },
 
@@ -76,6 +76,6 @@ local Button = Tab:CreateButton({
 local Button = Tab:CreateButton({
    Name = "project 111111",
    Callback = function()
-   loadstring(game:HttpGet("https://github.com/divitpanchal/blue-z-hub/blob/main/project%201111"))()
+   loadstring(game:HttpGet("loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/main/project%201111"))()"))()
    end,
 })
