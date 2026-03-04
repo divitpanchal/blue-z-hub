@@ -79,3 +79,9 @@ local Button = Tab:CreateButton({
    loadstring(game:HttpGet("loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/main/project%201111"))()"))()
    end,
 })
+local Button = Tab:CreateButton({
+   Name = "King Rua hub",
+   Callback = function()
+   repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer loadstring(game:HttpGet("https://raw.githubusercontent.com/shinichi-dz/phucshinyeuem/refs/heads/main/KingRuaHub.lua"))()
+   end,
+})
