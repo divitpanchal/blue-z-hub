@@ -5,7 +5,7 @@ local Window = Rayfield:CreateWindow({
    LoadingTitle = "scripts by supperdupperhacke",
    LoadingSubtitle = "by Sirius",
    ShowText = "supperdupperhacker scripts", -- for mobile users to unhide Rayfield, change if you'd like
-   Theme = "Ocean", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    ToggleUIKeybind = "a", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
 
