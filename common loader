@@ -1,87 +1,162 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local Window = Rayfield:CreateWindow({
-   Name = "Supperdupperhacke scripts",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "scripts by supperdupperhacke",
-   LoadingSubtitle = "by Sirius",
-   ShowText = "supperdupperhacker scripts", -- for mobile users to unhide Rayfield, change if you'd like
-   Theme = "Ocean", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+--// Black & Grey Themed Popup with Close Button + Custom URLs + Popup Text
+local TweenService = game:GetService("TweenService")
 
-   ToggleUIKeybind = "a", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
+-- Create ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from emitting warnings when the script has a version mismatch with the interface.
+-- Create Frame (start small)
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 40, 0, 20)
+frame.Position = UDim2.new(0.5, -20, 0.5, -10)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+frame.Parent = gui
 
-   ConfigurationSaving = {
-      Enabled = false,
-      FolderName = nil, -- Create a custom folder for your hub/game
-      FileName = "Big Hub"
-   },
+-- Rounded corners
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = frame
 
-   Discord = {
-      Enabled = true, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "DuJy8Hxm", -- The Discord invite code, do not include Discord.gg/. E.g. Discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the Discord every time they load it up
-   },
+-- Grey border
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 2
+stroke.Color = Color3.fromRGB(120, 120, 120)
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+stroke.Parent = frame
 
-   KeySystem = false, -- Set this to true to use our key system
-   KeySettings = {
-      Title = "Untitled",
-      Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
-      FileName = "Key", -- It is recommended to use something unique, as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"Hello"} -- List of keys that the system will accept, can be RAW file links (pastebin, github, etc.) or simple strings ("hello", "key22")
-   }
-})
-Rayfield:Notify({
-   Title = "Supperdupperhacke scripts",
-   Content = "common loader loaded  successfully",
-   Duration = 6.5,
-   Image = 4483362458,
-})
+-- Gradient background
+local gradient = Instance.new("UIGradient")
+gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 40, 40)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(60, 60, 60))
+}
+gradient.Rotation = 45
+gradient.Parent = frame
 
-local Tab = Window:CreateTab("scripts", 4483362458) -- Title, Image 
-local Button = Tab:CreateButton({
-   Name = "server Hopper",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/server%20hopper"))()
-   end,
-})
-local Button = Tab:CreateButton({
-   Name = "Blue x Hub",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/loding%20script"))()
-   end,
-})
-local Button = Tab:CreateButton({
-   Name = "Quantanium onyx",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/quantanium%20hub"))()
-   end,
-})
-local Button = Tab:CreateButton({
-   Name = "Zee Hub",
-   Callback = function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/zee"))()
-    end,
-})
-local Button = Tab:CreateButton({
-   Name = "Reiz Hub",
-   Callback = function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/reiz%20hub"))()
-   end,
-})
-local Button = Tab:CreateButton({
-   Name = "project 111111",
-   Callback = function()
-   loadstring(game:HttpGet("loadstring(game:HttpGet("https://raw.githubusercontent.com/divitpanchal/blue-z-hub/main/project%201111"))()"))()
-   end,
-})
-local Button = Tab:CreateButton({
-   Name = "King Rua hub",
-   Callback = function()
-   repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer loadstring(game:HttpGet("https://raw.githubusercontent.com/shinichi-dz/phucshinyeuem/refs/heads/main/KingRuaHub.lua"))()
-   end,
-})
+-- Temporary popup text
+local popupText = Instance.new("TextLabel")
+popupText.Size = UDim2.new(1, 0, 0, 40)
+popupText.Position = UDim2.new(0, 0, 0.5, -20)
+popupText.BackgroundTransparency = 1
+popupText.Text = "i am real"
+popupText.TextColor3 = Color3.fromRGB(255, 255, 255)
+popupText.Font = Enum.Font.GothamBold
+popupText.TextScaled = true
+popupText.Parent = frame
+popupText.TextTransparency = 1 -- start invisible
+
+-- Fade in text while expanding
+local fadeIn = TweenService:Create(popupText, TweenInfo.new(0.5), {TextTransparency = 0})
+fadeIn:Play()
+
+-- Tween to expand slowly
+local tweenExpand = TweenService:Create(frame, TweenInfo.new(1.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
+    {Size = UDim2.new(0, 340, 0, 260), Position = UDim2.new(0.5, -170, 0.5, -130)})
+tweenExpand:Play()
+tweenExpand.Completed:Wait()
+
+-- Fade out text after expansion
+local fadeOut = TweenService:Create(popupText, TweenInfo.new(0.5), {TextTransparency = 1})
+fadeOut:Play()
+fadeOut.Completed:Wait()
+popupText:Destroy()
+
+-- Header label (top-left)
+local headerLabel = Instance.new("TextLabel")
+headerLabel.Size = UDim2.new(0, 150, 0, 30)
+headerLabel.Position = UDim2.new(0, 10, 0, 5)
+headerLabel.BackgroundTransparency = 1
+headerLabel.Text = "by supper cat"
+headerLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+headerLabel.Font = Enum.Font.GothamBold
+headerLabel.TextScaled = true
+headerLabel.TextXAlignment = Enum.TextXAlignment.Left
+headerLabel.Parent = frame
+
+-- Close button (X)
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.Text = "X"
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextScaled = true
+closeBtn.Parent = frame
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 8)
+closeCorner.Parent = closeBtn
+
+local closeStroke = Instance.new("UIStroke")
+closeStroke.Thickness = 1
+closeStroke.Color = Color3.fromRGB(150, 0, 0)
+closeStroke.Parent = closeBtn
+
+closeBtn.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
+
+-- Scrolling frame for buttons
+local scroll = Instance.new("ScrollingFrame")
+scroll.Size = UDim2.new(1, -12, 1, -50)
+scroll.Position = UDim2.new(0, 6, 0, 40)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 500)
+scroll.ScrollBarThickness = 6
+scroll.BackgroundTransparency = 1
+scroll.Parent = frame
+
+local scrollCorner = Instance.new("UICorner")
+scrollCorner.CornerRadius = UDim.new(0, 10)
+scrollCorner.Parent = scroll
+
+-- Different URLs for each button
+local urls = {
+    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/loding%20script",
+    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/project%201111",
+    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/quantanium%20hub",
+    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/server%20hopper",
+    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/zee",
+    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file6.lua",
+    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file7.lua",
+    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file8.lua",
+    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file9.lua",
+    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file10.lua",
+}
+
+-- Function to create buttons
+local function createButton(num)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, -20, 0, 40)
+    btn.Position = UDim2.new(0, 10, 0, (num-1)*45)
+    btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    btn.TextColor3 = Color3.fromRGB(220, 220, 220)
+    btn.Text = tostring(num)
+    btn.Font = Enum.Font.GothamBold
+    btn.TextScaled = true
+    btn.Parent = scroll
+
+    local btnStroke = Instance.new("UIStroke")
+    btnStroke.Thickness = 1
+    btnStroke.Color = Color3.fromRGB(100, 100, 100)
+    btnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    btnStroke.Parent = btn
+
+    btn.MouseEnter:Connect(function()
+        btn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    end)
+    btn.MouseLeave:Connect(function()
+        btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    end)
+
+    btn.MouseButton1Click:Connect(function()
+        local url = urls[num]
+        local response = game:HttpGet(url)
+        loadstring(response)()
+    end)
+end
+
+-- Create 10 buttons
+for i = 1, 10 do
+    createButton(i)
+end
