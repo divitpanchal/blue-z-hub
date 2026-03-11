@@ -131,7 +131,7 @@ local function createButton(num)
     btn.Position = UDim2.new(0, 10, 0, (num-1)*45)
     btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
     btn.TextColor3 = Color3.fromRGB(220, 220, 220)
-    btn.Text = tostring(num)
+    btn.Text = "abch"   -- changed here
     btn.Font = Enum.Font.GothamBold
     btn.TextScaled = true
     btn.Parent = scroll
