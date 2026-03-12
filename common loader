@@ -27,8 +27,8 @@ stroke.Parent = frame
 -- Gradient background
 local gradient = Instance.new("UIGradient")
 gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 40, 40)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(60, 60, 60))
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 40, 40)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(60, 60, 60))
 }
 gradient.Rotation = 45
 gradient.Parent = frame
@@ -51,7 +51,7 @@ fadeIn:Play()
 
 -- Tween to expand slowly
 local tweenExpand = TweenService:Create(frame, TweenInfo.new(1.5, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
-    {Size = UDim2.new(0, 340, 0, 260), Position = UDim2.new(0.5, -170, 0.5, -130)})
+	{Size = UDim2.new(0, 340, 0, 260), Position = UDim2.new(0.5, -170, 0.5, -130)})
 tweenExpand:Play()
 tweenExpand.Completed:Wait()
 
@@ -94,7 +94,7 @@ closeStroke.Color = Color3.fromRGB(150, 0, 0)
 closeStroke.Parent = closeBtn
 
 closeBtn.MouseButton1Click:Connect(function()
-    gui:Destroy()
+	gui:Destroy()
 end)
 
 -- Scrolling frame for buttons
@@ -112,51 +112,61 @@ scrollCorner.Parent = scroll
 
 -- Different URLs for each button
 local urls = {
-    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/loding%20script",
-    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/project%201111",
-    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/quantanium%20hub",
-    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/server%20hopper",
-    "https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/zee",
-    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file6.lua",
-    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file7.lua",
-    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file8.lua",
-    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file9.lua",
-    "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file10.lua",
+	"https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/loding%20script",
+	"https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/project%201111",
+	"https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/quantanium%20hub",
+	"https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/server%20hopper",
+	"https://raw.githubusercontent.com/divitpanchal/blue-z-hub/refs/heads/main/zee",
+	"https://raw.githubusercontent.com/OhhMyGehlee/ver/refs/heads/main/gud",
+	"https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file7.lua",
+	"https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file8.lua",
+	"https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file9.lua",
+	"https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/file10.lua",
 }
+
+-- Custom names for first five buttons
+local names = {"bluex hub", "project 111", "quantanium hub", "server hopper", "zee hub", "perm friut"}
 
 -- Function to create buttons
 local function createButton(num)
-    local btn = Instance.new("TextButton")
-    btn.Size = UDim2.new(1, -20, 0, 40)
-    btn.Position = UDim2.new(0, 10, 0, (num-1)*45)
-    btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    btn.TextColor3 = Color3.fromRGB(220, 220, 220)
-    btn.Text = "abch"   -- changed here
-    btn.Font = Enum.Font.GothamBold
-    btn.TextScaled = true
-    btn.Parent = scroll
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, -20, 0, 40)
+	btn.Position = UDim2.new(0, 10, 0, (num-1)*45)
+	btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	btn.TextColor3 = Color3.fromRGB(220, 220, 220)
 
-    local btnStroke = Instance.new("UIStroke")
-    btnStroke.Thickness = 1
-    btnStroke.Color = Color3.fromRGB(100, 100, 100)
-    btnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    btnStroke.Parent = btn
+	-- Assign names for first 5, else "error to load"
+	if names[num] then
+		btn.Text = names[num]
+	else
+		btn.Text = "error to load"
+	end
 
-    btn.MouseEnter:Connect(function()
-        btn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-    end)
-    btn.MouseLeave:Connect(function()
-        btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    end)
+	btn.Font = Enum.Font.GothamBold
+	btn.TextScaled = true
+	btn.Parent = scroll
 
-    btn.MouseButton1Click:Connect(function()
-        local url = urls[num]
-        local response = game:HttpGet(url)
-        loadstring(response)()
-    end)
+	local btnStroke = Instance.new("UIStroke")
+	btnStroke.Thickness = 1
+	btnStroke.Color = Color3.fromRGB(100, 100, 100)
+	btnStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	btnStroke.Parent = btn
+
+	btn.MouseEnter:Connect(function()
+		btn.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	end)
+	btn.MouseLeave:Connect(function()
+		btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	end)
+
+	btn.MouseButton1Click:Connect(function()
+		local url = urls[num]
+		local response = game:HttpGet(url)
+		loadstring(response)()
+	end)
 end
 
 -- Create 10 buttons
 for i = 1, 10 do
-    createButton(i)
+	createButton(i)
 end
